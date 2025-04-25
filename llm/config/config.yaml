@@ -1,4 +1,1 @@
-api_key: sk-68ae81c34d8e439bb503fa5cfefac06a
-model: deepseek-chat
-port: "[::]:11028"
-base_url: "https://api.deepseek.com/v1"
+
