@@ -1,4 +1,5 @@
 .idea
 .api
 .config/config.yaml
+config/config.yaml
 __pycache__/
