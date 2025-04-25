@@ -1,0 +1,16 @@
+## 示例配置
+app:
+  addr: "0.0.0.0:8080"
+github:
+  clientId: "123"
+  clientSecret: "123"
+data:
+  addr: "root:12345678@tcp(127.0.0.1:3306)/GitEval?charset=utf8mb4&parseTime=True&loc=Local"
+llm:
+  addr: "http://localhost:11028"
+jwt:
+  secretKey: "giteval"
+  timeout: 300
+cache:
+  addr: "localhost:6379"
+  password: "123"

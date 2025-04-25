@@ -1,0 +1,379 @@
+definitions:
+  model.Leaderboard:
+    properties:
+      avatar_url:
+        type: string
+      score:
+        type: number
+      user_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+  model.User:
+    properties:
+      Bio:
+        description: 用户的个人简介
+        type: string
+      avatar_url:
+        description: 用户头像的 URL
+        type: string
+      blog:
+        description: 博客连接
+        type: string
+      collaborators:
+        description: 协作者的数量
+        type: integer
+      company:
+        description: 用户所属的公司
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      evaluation:
+        description: 评估
+        type: string
+      followers:
+        description: 粉丝数
+        type: integer
+      following:
+        description: 关注数
+        type: integer
+      id:
+        type: integer
+      location:
+        description: 地区
+        type: string
+      login_name:
+        description: 用户的登录名
+        type: string
+      name:
+        description: 真实姓名
+        type: string
+      nationality:
+        description: 国籍
+        type: string
+      public_repos:
+        description: 用户公开的仓库的数量
+        type: integer
+      score:
+        description: 评分
+        type: number
+      total_private_repos:
+        description: 用户的私有仓库总数
+        type: integer
+    type: object
+  response.CallBack:
+    properties:
+      token:
+        type: string
+    type: object
+  response.DomainResp:
+    properties:
+      domain:
+        items:
+          type: string
+        type: array
+    type: object
+  response.Err:
+    properties:
+      error: {}
+    type: object
+  response.EvaluationResp:
+    properties:
+      evaluation:
+        type: string
+    type: object
+  response.NationResp:
+    properties:
+      nation:
+        type: string
+    type: object
+  response.Ranking:
+    properties:
+      leaderboard:
+        items:
+          $ref: '#/definitions/model.Leaderboard'
+        type: array
+    type: object
+  response.SearchResp:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+    type: object
+  response.Success:
+    properties:
+      data: {}
+      msg:
+        type: string
+    type: object
+  response.User:
+    properties:
+      domain:
+        items:
+          type: string
+        type: array
+      user:
+        $ref: '#/definitions/model.User'
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/auth/callBack:
+    get:
+      description: 使用code进行最终登录同时异步用来初始化这个用户,会返回一个token
+      parameters:
+      - description: github重定向的code
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 初始化成功!
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.CallBack'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 使用code进行最终登录
+      tags:
+      - Auth
+  /api/v1/auth/login:
+    get:
+      description: github用户登录授权接口,会自动重定向到github的授权接口上
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: github用户登录授权接口
+      tags:
+      - Auth
+  /api/v1/auth/logout:
+    get:
+      description: 登出之后会把jwt加到黑名单里面去
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登出成功!
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 登出
+      tags:
+      - Auth
+  /api/v1/user/getDomain:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 领域获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.DomainResp'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+        "404":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据用户 ID 获取用户的领域
+      tags:
+      - User
+  /api/v1/user/getEvaluation:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.EvaluationResp'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据userid获取用户评价
+      tags:
+      - User
+  /api/v1/user/getInfo:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.User'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 从userid获取用户
+      tags:
+      - User
+  /api/v1/user/getNation:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 国家获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.NationResp'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+        "404":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据用户 ID 获取用户所在国家
+      tags:
+      - User
+  /api/v1/user/getRank:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Ranking'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据userid获取用户的score的排行榜
+      tags:
+      - User
+  /api/v1/user/getUserInfo:
+    get:
+      parameters:
+      - description: 用户的user_id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用户信息获取成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.User'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据userid获取用户详细信息
+      tags:
+      - User
+  /api/v1/user/search:
+    get:
+      parameters:
+      - description: 国家，选择性参数
+        in: query
+        name: nation
+        type: string
+      - description: 领域，选择性参数
+        in: query
+        name: domain
+        required: true
+        type: string
+      - description: 分页参数表示这是第几页
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页返回的用户数量，建议一次返回10个
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 用户搜索成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Success'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.SearchResp'
+              type: object
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Err'
+      summary: 根据国家和领域搜索用户
+      tags:
+      - User
+swagger: "2.0"
