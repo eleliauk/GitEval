@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	llmv1 "github.com/GitEval/GitEval-Backend/client/gen"
 	"github.com/GitEval/GitEval-Backend/model"
 	"github.com/google/go-github/v50/github"

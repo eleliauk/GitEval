@@ -38,7 +38,7 @@ domain_template = """
 
 evaluation_template = """
 请根据以下 GitHub 用户的信息为我提供综合评价：
-
+全部为夸赞信息 不要贬低用户 
 我的各个仓库事件及其相关活动：
 {user_events}
 

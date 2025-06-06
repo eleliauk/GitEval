@@ -7,7 +7,8 @@ GitEval-Backend 是一个后端服务项目，旨在通过分析用户的 GitHub
 项目遵循 MVC 设计模式，分为 `api`、`client`、`conf`、`controller`、`docs`、`middleware`、`model`、`pkg`、`service` 等层，达到代码的高解耦性和模块化。
 
 ```
-bash复制代码GitEval-Backend
+bash
+GitEval-Backend
 ├── api                    # API 层：请求、响应体结构与路由定义
 │   ├── request            # 请求体结构定义
 │   ├── response           # 响应体结构定义

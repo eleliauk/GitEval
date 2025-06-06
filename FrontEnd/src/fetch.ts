@@ -1,4 +1,4 @@
-const preUrl = 'http://47.92.102.209:8080';
+const preUrl = 'http://localhost:8080';
 
 export async function get<T>(url = '', isToken: boolean): Promise<T> {
   const headers = new Headers();

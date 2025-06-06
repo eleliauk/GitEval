@@ -6,7 +6,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 
 function Login() {
   function test() {
-    window.location.href = 'http://47.92.102.209:8080/api/v1/auth/login';
+    window.location.href = 'http://localhost:8080/api/v1/auth/login';
   }
   return (
     <div className="flex items-center justify-center w-full min-h-screen p-6">
